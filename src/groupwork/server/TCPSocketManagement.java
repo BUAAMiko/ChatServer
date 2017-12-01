@@ -3,6 +3,7 @@ package groupwork.server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Date;
 
 public class TCPSocketManagement extends Thread {
     static int socketNum = 0;
@@ -30,11 +31,10 @@ public class TCPSocketManagement extends Thread {
     }
 
     public void listenPort() throws IOException {
-        System.out.println("服务器正在监听 " + port + " 端口");
+        MainService.log.println(new Date() + ":服务器正在监听 " + port + " 端口");
         socket = serverSocket.accept();
         ip = String.valueOf(socket.getInetAddress());
-        System.out.println("收到来自" + ip + "的连接，现有连接数" + (++socketNum));
-        MainService.createNewSocketThread();
+        MainService.log.println(new Date() + ":收到来自" + ip + "的连接，现有连接数" + (++socketNum));
     }
 
     void closeConnect() throws IOException {
@@ -61,7 +61,7 @@ public class TCPSocketManagement extends Thread {
                 b[i++] = in.readByte();
             }
         } catch (IOException e) {
-            System.out.println("服务器已检测到来自" + ip + "的连接已断开");
+            MainService.log.println(new Date() + "服务器已检测到来自" + ip + "的连接已断开");
             try {
                 closeConnect();
             } catch (IOException e1) {

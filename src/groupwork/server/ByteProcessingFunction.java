@@ -1,6 +1,11 @@
 package groupwork.server;
 
-public class ByteConversionFunction {
+public class ByteProcessingFunction {
+
+    public static int byteArrayEffectiveLength(byte[] src) {
+        String s = new String(src);
+        return s.indexOf("END");
+    }
 
     public static byte[] intToBytes( int value )
     {

@@ -1,27 +1,34 @@
 package groupwork.server;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.*;
 
 public class PortRequestService extends Thread {
 
-    UDPSocketManagement udp;
+    static UDPSocketManagement udp;
     DatagramPacket packet;
 
     @Override
     public void run() {
-        try {
-            udp = new UDPSocketManagement(2333);
-            packet = udp.receivedDatagramPacket();
-            byte[] data = packet.getData();
-            if (data[0] == 0x0F) {
-                data = ByteConversionFunction.intToBytes(MainService.getPort());
-                udp.sendDatagramPacket(data, 0, data.length, packet.getAddress());
+        while(true) {
+            try {
+                udp = new UDPSocketManagement(2333);
+                packet = udp.receivedDatagramPacket();
+                byte[] data = packet.getData();
+                String string = new String(data, 0,ByteProcessingFunction.byteArrayEffectiveLength(data));
+                if (string.equals("TCP_Port")) {
+                    data = ByteProcessingFunction.intToBytes(MainService.createNewTCPSocketThread());
+                    udp.sendDatagramPacket(data, 0, data.length, packet.getAddress());
+                } else if (string.equals("UDP_Port")) {
+                    data = ByteProcessingFunction.intToBytes(MainService.createNewUDPSocketThread());
+                    udp.sendDatagramPacket(data, 0, data.length, packet.getAddress());
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                if (udp != null)
+                    udp.closeDatagramSocket();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
