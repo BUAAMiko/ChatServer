@@ -1,43 +1,60 @@
 package groupwork.server;
 
+import sun.applet.Main;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TCPSocketManagement extends Thread {
     static int socketNum = 0;
-    int port;
-    String ip;
-    DatabaseManagement db;
-    ServerSocket serverSocket;
-    Socket socket;
-    DataOutputStream out;
-    DataInputStream in;
+    private int port;
+    private String ip;
+    private DatabaseManagement db;
+    private ServerSocket serverSocket;
+    private Socket socket;
+    private DataOutputStream out;
+    private DataInputStream in;
 
 
     TCPSocketManagement() throws ClassNotFoundException, IOException {
-        db = new DatabaseManagement();
+        db = MainService.db;
         serverSocket = new ServerSocket(0);
         port = serverSocket.getLocalPort();
         MainService.setPort(port);
     }
 
     TCPSocketManagement(int port) throws ClassNotFoundException, IOException {
-        db = new DatabaseManagement();
+        db = MainService.db;
         serverSocket = new ServerSocket(port);
         this.port = serverSocket.getLocalPort();
         MainService.setPort(this.port);
     }
 
-    public void listenPort() throws IOException {
+    private void listenPort() throws IOException {
         MainService.log.println(new Date() + ":服务器正在监听 " + port + " 端口");
         socket = serverSocket.accept();
         ip = String.valueOf(socket.getInetAddress());
         MainService.log.println(new Date() + ":收到来自" + ip + "的连接，现有连接数" + (++socketNum));
     }
 
-    void closeConnect() throws IOException {
+    private void checkConnection() {
+        try {
+            socket.sendUrgentData(0xFF);
+        } catch (IOException e) {
+            try {
+                closeConnect();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    private void closeConnect() throws IOException {
+        MainService.log.println(new Date() + "服务器已检测到来自" + ip + "的连接已断开");
         socket.shutdownInput();
         in.close();
         out.close();
@@ -54,20 +71,21 @@ public class TCPSocketManagement extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            byte[] b = new byte[in.available()];
-            int i = 0;
-            while (true) {
-                b[i++] = in.readByte();
+        Timer timer = new Timer();
+        TimerTask checkConnection = new TimerTask() {
+            @Override
+            public void run() {
+                checkConnection();
             }
-        } catch (IOException e) {
-            MainService.log.println(new Date() + "服务器已检测到来自" + ip + "的连接已断开");
+        };
+        timer.schedule(checkConnection,5000);
+        while (socket.isConnected()) {
             try {
-                closeConnect();
-            } catch (IOException e1) {
-                e1.printStackTrace();
+                byte[] data = new byte[in.available()];
+                in.read(data);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            socketNum--;
         }
     }
 }

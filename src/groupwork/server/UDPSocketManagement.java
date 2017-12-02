@@ -5,11 +5,12 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.sql.SQLException;
 
 public class UDPSocketManagement extends Thread{
 
-    DatagramSocket socket;
-    DatagramPacket packet;
+    private DatagramSocket socket;
+    private DatagramPacket packet;
 
     UDPSocketManagement() throws SocketException {
         socket = new DatagramSocket(0);
@@ -25,17 +26,17 @@ public class UDPSocketManagement extends Thread{
         MainService.setPort(socket.getLocalPort());
     }
 
-    public void sendDatagramPacket(byte[] data, int offset, int length, InetAddress address) throws IOException {
+    void sendDatagramPacket(byte[] data, int offset, int length, InetAddress address) throws IOException {
         packet.setData(data,offset,length);
         packet.setAddress(address);
         socket.send(packet);
     }
 
-    public void sendDatagramPacket(DatagramPacket packet) throws IOException {
+    private void sendDatagramPacket(DatagramPacket packet) throws IOException {
         socket.send(packet);
     }
 
-    public DatagramPacket receivedDatagramPacket() throws IOException {
+    DatagramPacket receivedDatagramPacket() throws IOException {
         packet.setData(new byte[1024]);
         socket.receive(packet);
         return packet;
@@ -49,8 +50,10 @@ public class UDPSocketManagement extends Thread{
     public void run() {
         try {
             receivedDatagramPacket();
+            byte[] response = UDPPacketAnalysis.pakcetAnalysis(packet.getData());
+            packet.setData(response);
             sendDatagramPacket(packet);
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }

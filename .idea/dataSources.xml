@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="MySQL - ChatSoftware@139.199.119.183" uuid="358634b4-9e2c-4e0e-a2c6-937d3b608e24">
+    <data-source source="LOCAL" name="ChatSoftware@139.199.119.183" uuid="aee6029c-79fa-4f07-a5c8-08f875fe796a">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://139.199.119.183:3306/</jdbc-url>
+      <jdbc-url>jdbc:mysql://139.199.119.183:3306/ChatSoftware</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />

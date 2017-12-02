@@ -15,21 +15,21 @@ public class DatabaseManagement {
     private Statement statement;
     private String sql;
 
-    DatabaseManagement() throws ClassNotFoundException {
+    DatabaseManagement() throws ClassNotFoundException, SQLException {
         url = "jdbc:mysql://139.199.119.183:3306/ChatSoftware?useSSL=true";
         username = "jj";
         password = "15975302648";
         init();
     }
 
-    DatabaseManagement(String url, String username, String password) throws ClassNotFoundException {
-        init();
+    DatabaseManagement(String url, String username, String password) throws ClassNotFoundException, SQLException {
         this.url = url;
         this.username = username;
         this.password = password;
+        init();
     }
 
-    void init() throws ClassNotFoundException {
+    private void init() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
         try {
             connect();
@@ -40,15 +40,18 @@ public class DatabaseManagement {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
+        } finally {
+            close(statement);
+            close(conn);
         }
     }
 
-    void connect() throws SQLException {
+    private void connect() throws SQLException {
         conn = DriverManager.getConnection(url,username,password);
         statement = conn.createStatement();
     }
 
-    void close(Object o) throws SQLException {
+    private void close(Object o) throws SQLException {
         if (o != null) {
             if (o instanceof Connection) {
                 ((Connection) o).close();
@@ -60,13 +63,13 @@ public class DatabaseManagement {
         }
     }
 
-    void close(Connection conn, Statement statement, ResultSet rs) throws SQLException {
+    private void close(Connection conn, Statement statement, ResultSet rs) throws SQLException {
         rs.close();
         statement.close();
         conn.close();
     }
 
-    void createDatabase() {
+    private void createDatabase() {
         sql = "CREATE DATABASE ChatSoftware";
         try {
             conn = DriverManager.getConnection("jdbc:mysql://139.199.119.183:3306/?useSSL=true",username,password);
@@ -81,7 +84,7 @@ public class DatabaseManagement {
         }
     }
 
-    void createTables() {
+    private void createTables() {
         sql = "CREATE TABLE userinfo" +
                 "(" +
                 "    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT," +
@@ -94,6 +97,10 @@ public class DatabaseManagement {
             System.out.print(e.getErrorCode());
             e.printStackTrace();
         }
+    }
+
+    void setSql(String sql) {
+        this.sql = sql;
     }
 
     List quarySql() throws SQLException {

@@ -1,13 +1,15 @@
 package groupwork.server;
 
+import java.io.*;
+
 public class ByteProcessingFunction {
 
-    public static int byteArrayEffectiveLength(byte[] src) {
+    static int byteArrayEffectiveLength(byte[] src) {
         String s = new String(src);
         return s.indexOf("END");
     }
 
-    public static byte[] intToBytes( int value )
+    static byte[] intToBytes(int value)
     {
         byte[] src = new byte[4];
         src[3] =  (byte) ((value>>24) & 0xFF);
@@ -24,5 +26,24 @@ public class ByteProcessingFunction {
                 | ((src[offset+2] & 0xFF)<<16)
                 | ((src[offset+3] & 0xFF)<<24));
         return value;
+    }
+
+    static byte[] objectToBytes(Object o) throws IOException {
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+        ObjectOutputStream objOut = new ObjectOutputStream(byteOut);
+        objOut.writeObject(o);
+        byte[] data = byteOut.toByteArray();
+        objOut.close();
+        byteOut.close();
+        return data;
+    }
+
+    static Object bytesToObject(byte[] data) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream byteIn = new ByteArrayInputStream(data);
+        ObjectInputStream objIn = new ObjectInputStream(byteIn);
+        Object o = objIn.readObject();
+        objIn.close();
+        byteIn.close();
+        return o;
     }
 }

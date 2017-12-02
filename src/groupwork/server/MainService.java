@@ -2,6 +2,7 @@ package groupwork.server;
 
 import java.io.*;
 import java.net.SocketException;
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -9,10 +10,11 @@ import java.util.concurrent.Executors;
 public class MainService {
 
     private static int port;
-    public static PrintStream log;
-    public static ExecutorService threadPool;
+    static DatabaseManagement db;
+    static PrintStream log;
+    private static ExecutorService threadPool;
 
-    public static int createNewTCPSocketThread() throws IOException, ClassNotFoundException {
+    static int createNewTCPSocketThread() throws IOException, ClassNotFoundException {
         Thread network = new TCPSocketManagement();
         threadPool.execute(network);
         return MainService.port;
@@ -24,15 +26,16 @@ public class MainService {
         return MainService.port;
     }
 
-    public static void setPort(int port) {
+    static void setPort(int port) {
         MainService.port = port;
     }
 
     public static void main(String args[]) {
         try {
+            db = new DatabaseManagement();
             File file = new File("./log.txt");
             log = new PrintStream(new FileOutputStream(file, true), true);
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         threadPool = Executors.newCachedThreadPool();
