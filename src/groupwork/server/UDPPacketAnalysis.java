@@ -13,7 +13,7 @@ public class UDPPacketAnalysis {
         byte[] response = new byte[1];
         switch (s) {
             case "SQL_Q": {
-                s = new String(data,data[0] + 1,data[data[0] + 1]);
+                s = (String) map.get("SQL");
                 MainService.db.setSql(s);
                 List l = MainService.db.quarySql();
                 response = ByteProcessingFunction.objectToBytes(l);
