@@ -16,9 +16,7 @@ public class DatabaseManagement {
     private String sql;
 
     DatabaseManagement() throws ClassNotFoundException, SQLException {
-        url = "jdbc:mysql://139.199.119.183:3306/ChatSoftware?useSSL=true";
-        username = "jj";
-        password = "15975302648";
+
         init();
     }
 
