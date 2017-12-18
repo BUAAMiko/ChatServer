@@ -14,10 +14,6 @@ public class TCPPacketAnalysis {
         String s = (String) map.get("Type");
         byte[] response = new byte[1];
         switch (s) {
-            case "Media": {
-
-            }
-            break;
             case "Picture": {
 
             }

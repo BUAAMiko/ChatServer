@@ -4,6 +4,9 @@ import sun.applet.Main;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,13 +53,14 @@ public class UDPPacketAnalysis {
                 response = ByteProcessingFunction.objectToBytes(l);
             }
             case "Send_Message": {
+                SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 s = "INSERT INTO ChatMessage (Date,`From`,`To`,MessageType,Message,SubMessage) VALUES (\""
-                        + map.get("Date") + "\",\""
+                        + date.format(new Date()) + "\",\""
                         + map.get("From") + "\",\""
                         + map.get("To") + "\",\""
-                        + map.get("MessageType") + "\",\""
+                        + "Text" + "\",\""
                         + map.get("Message") + "\",\""
-                        + map.get("SubMessage") + "\""
+                        + "NULL" + "\""
                         + ")";
                 MainService.db.setSql(s);
                 int i = MainService.db.updateSql();
