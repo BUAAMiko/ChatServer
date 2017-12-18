@@ -17,9 +17,9 @@
 * "SQL_Q"   
   "SQL" 中保存查询的SQL语句（String）  
   返回一个内容为Map<String,String>的List，为查询结果（List）
-* "Register"
-  "Username"中保存用户的昵称(String)
-  "Password"中保存用户的密码(String)
+* "Register"  
+  "Username"中保存用户的昵称(String)  
+  "Password"中保存用户的密码(String)  
   返回一个内容为int的Id为用户的登录Id(int)
 * "Login"  
   "Id"中保存用户的用户名（非昵称）（int/String）  
