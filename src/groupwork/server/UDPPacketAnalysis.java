@@ -1,5 +1,7 @@
 package groupwork.server;
 
+import sun.applet.Main;
+
 import java.io.*;
 import java.sql.SQLException;
 import java.util.List;
@@ -19,13 +21,23 @@ public class UDPPacketAnalysis {
                 response = ByteProcessingFunction.objectToBytes(l);
             }
             break;
+            case "Register": {
+                s = "INSERT INTO UserInfo(Username, Password) VALUES (\"" + map.get("Username") + "\",MD5(\"" + map.get("Password") + "\"))";
+                MainService.db.setSql(s);
+                List l = MainService.db.quarySql();
+                if (l.get(0) instanceof Map) {
+                    int Id = (int) ((Map) l.get(0)).get("Id");
+                    response = ByteProcessingFunction.intToBytes(Id);
+                }
+            }
+            break;
             case "Login": {
                 s = "SELECT * FROM UserInfo WHERE Id = " + map.get("Id") + " AND Password = MD5(\"" + map.get("Password") +"\")";
                 MainService.db.setSql(s);
                 List l = MainService.db.quarySql();
                 if (l.get(0) instanceof Map) {
-                    String Id = (String) ((Map) l.get(0)).get("Username");
-                    response = Id.getBytes();
+                    String Username = (String) ((Map) l.get(0)).get("Username");
+                    response = Username.getBytes();
                 } else {
                     response = "FALSE".getBytes();
                 }

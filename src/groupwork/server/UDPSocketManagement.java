@@ -32,7 +32,7 @@ public class UDPSocketManagement extends Thread{
         socket.send(packet);
     }
 
-    /*private void sendDatagramPacket(DatagramPacket packet) throws IOException {
+    private void sendDatagramPacket(DatagramPacket packet) throws IOException {
         socket.send(packet);
     }
 
