@@ -50,17 +50,16 @@ public class UDPPacketAnalysis {
                 response = ByteProcessingFunction.objectToBytes(l);
             }
             case "Send_Message": {
-                s = "INSERT INTO ChatMessage (Date,`From`,`To`,Type,Message,SubMessage) VALUES (\""
+                s = "INSERT INTO ChatMessage (Date,`From`,`To`,MessageType,Message,SubMessage) VALUES (\""
                         + map.get("Date") + "\",\""
                         + map.get("From") + "\",\""
                         + map.get("To") + "\",\""
-                        + map.get("Type") + "\",\""
+                        + map.get("MessageType") + "\",\""
                         + map.get("Message") + "\",\""
                         + map.get("SubMessage") + "\""
                         + ")";
                 MainService.db.setSql(s);
-                MainService.db.updateSql();
-                int i = Integer.parseInt((String) map.get("Id"));
+                int i = MainService.db.updateSql();
                 response = ByteProcessingFunction.intToBytes(i);
             }
         }
