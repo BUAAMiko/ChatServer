@@ -30,12 +30,12 @@
   返回一个内容为Map<String,String>的List,为查询结果 (List)
 * "Send_Message"    
   "Date"中保存信息的发送日期和时间格式为YYYY-MM-DD HH:MM:SS (String)  
-  "From"中保存发送者的Id(非昵称) (int/String)
-  "To"中保存接收者的Id(非昵称) (int/String)
-  "MessageType"中保存信息的类型如Text,Picture,File等 (String)
-  "Message"中保存信息的具体内容 (String)
-  "SubMessage"中保存信息的其余内容如文件名 (String)
-  "MessageType"暂定仅为Text,纯字符信息时SubMessage为字符串"NULL"
+  "From"中保存发送者的Id(非昵称) (int/String)  
+  "To"中保存接收者的Id(非昵称) (int/String)  
+  "MessageType"中保存信息的类型如Text,Picture,File等 (String)  
+  "Message"中保存信息的具体内容 (String)  
+  "SubMessage"中保存信息的其余内容如文件名 (String)  
+  "MessageType"暂定仅为Text,纯字符信息时SubMessage为字符串"NULL"  
   返回一个正整数int值则成功 (int)
 ###### TCP连接
 所有的TCP连接的数据包中均为序列化的Map实例，返回为请求内容的序列化内容，其中请求数据包中"Type"指明请求的数据内容，具体每种所需的其余数据见下表  
