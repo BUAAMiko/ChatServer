@@ -26,16 +26,14 @@ public class TCPPacketAnalysis {
                         + map.get("FileName") + "\""
                         + ")";
                 MainService.db.setSql(s);
-                List l = MainService.db.quarySql();
-                if (l.get(0) instanceof Map) {
-                    int Id = (int) ((Map) l.get(0)).get("Id");
-                    String fileName = Id + "-" + map.get("FileName");
-                    FileOutputStream out = new FileOutputStream(fileName);
-                    out.write((byte[]) map.get("Data"));
-                    s = "UPDATE ChatMessage SET Message = \"" + fileName + "\" WHERE Id = " + Id;
-                    MainService.db.setSql(s);
-                    MainService.db.updateSql();
-                }
+                int id = MainService.db.updateSql();
+                String fileName = id + "-" + map.get("FileName");
+                FileOutputStream out = new FileOutputStream(fileName);
+                out.write((byte[]) map.get("Data"));
+                s = "UPDATE ChatMessage SET Message = \"" + fileName + "\" WHERE Id = " + id;
+                MainService.db.setSql(s);
+                MainService.db.updateSql();
+                response = ((String) map.get("PacketIdentify")).getBytes();
             }
             break;
             case "Ask_Picture": {
@@ -52,16 +50,14 @@ public class TCPPacketAnalysis {
                         + map.get("FileName") + "\""
                         + ")";
                 MainService.db.setSql(s);
-                List l = MainService.db.quarySql();
-                if (l.get(0) instanceof Map) {
-                    int Id = (int) ((Map) l.get(0)).get("Id");
-                    String fileName = Id + "-" + map.get("FileName");
-                    FileOutputStream out = new FileOutputStream(fileName);
-                    out.write((byte[]) map.get("Data"));
-                    s = "UPDATE ChatMessage SET Message = \"" + fileName + "\" WHERE Id = " + Id;
-                    MainService.db.setSql(s);
-                    MainService.db.updateSql();
-                }
+                int id = MainService.db.updateSql();
+                String fileName = id + "-" + map.get("FileName");
+                FileOutputStream out = new FileOutputStream(fileName);
+                out.write((byte[]) map.get("Data"));
+                s = "UPDATE ChatMessage SET Message = \"" + fileName + "\" WHERE Id = " + id;
+                MainService.db.setSql(s);
+                MainService.db.updateSql();
+                response = ((String) map.get("PacketIdentify")).getBytes();
             }
             break;
             case "Ask_File": {

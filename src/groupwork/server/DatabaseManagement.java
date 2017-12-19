@@ -103,7 +103,7 @@ public class DatabaseManagement {
         this.sql = sql;
     }
 
-    List quarySql() throws SQLException {
+    List querySql() throws SQLException {
         if (sql == null) {
             System.out.println("empty sql");
             return null;
