@@ -3,6 +3,8 @@ package groupwork.server;
 import java.io.*;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -14,11 +16,55 @@ public class TCPPacketAnalysis {
         String s = (String) map.get("Type");
         byte[] response = new byte[1];
         switch (s) {
-            case "Picture": {
+            case "Send_Picture": {
+                SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                s = "INSERT INTO ChatMessage (Date,`From`,`To`,MessageType,SubMessage) VALUES (\""
+                        + date.format(new Date()) + "\",\""
+                        + map.get("From") + "\",\""
+                        + map.get("To") + "\",\""
+                        + "Picture" + "\",\""
+                        + map.get("FileName") + "\""
+                        + ")";
+                MainService.db.setSql(s);
+                List l = MainService.db.quarySql();
+                if (l.get(0) instanceof Map) {
+                    int Id = (int) ((Map) l.get(0)).get("Id");
+                    String fileName = Id + "-" + map.get("FileName");
+                    FileOutputStream out = new FileOutputStream(fileName);
+                    out.write((byte[]) map.get("Data"));
+                    s = "UPDATE ChatMessage SET Message = \"" + fileName + "\" WHERE Id = " + Id;
+                    MainService.db.setSql(s);
+                    MainService.db.updateSql();
+                }
+            }
+            break;
+            case "Ask_Picture": {
 
             }
             break;
-            case "File": {
+            case "Send_File": {
+                SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                s = "INSERT INTO ChatMessage (Date,`From`,`To`,MessageType,SubMessage) VALUES (\""
+                        + date.format(new Date()) + "\",\""
+                        + map.get("From") + "\",\""
+                        + map.get("To") + "\",\""
+                        + "File" + "\",\""
+                        + map.get("FileName") + "\""
+                        + ")";
+                MainService.db.setSql(s);
+                List l = MainService.db.quarySql();
+                if (l.get(0) instanceof Map) {
+                    int Id = (int) ((Map) l.get(0)).get("Id");
+                    String fileName = Id + "-" + map.get("FileName");
+                    FileOutputStream out = new FileOutputStream(fileName);
+                    out.write((byte[]) map.get("Data"));
+                    s = "UPDATE ChatMessage SET Message = \"" + fileName + "\" WHERE Id = " + Id;
+                    MainService.db.setSql(s);
+                    MainService.db.updateSql();
+                }
+            }
+            break;
+            case "Ask_File": {
 
             }
         }

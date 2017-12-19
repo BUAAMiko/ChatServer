@@ -21,7 +21,7 @@ public class MainService {
     }
 
     static int createNewUDPSocketThread() throws SocketException {
-        Thread network = new UDPSocketManagement(10000);
+        Thread network = new UDPSocketManagement();
         threadPool.execute(network);
         return MainService.port;
     }

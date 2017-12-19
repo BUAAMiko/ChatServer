@@ -6,7 +6,7 @@ public class ByteProcessingFunction {
 
     static int byteArrayEffectiveLength(byte[] src) {
         String s = new String(src);
-        return s.indexOf("END");
+        return s.indexOf("\0");
     }
 
     static byte[] intToBytes(int value)

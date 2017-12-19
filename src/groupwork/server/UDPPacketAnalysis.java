@@ -27,6 +27,9 @@ public class UDPPacketAnalysis {
             case "Register": {
                 s = "INSERT INTO UserInfo(Username, Password) VALUES (\"" + map.get("Username") + "\",MD5(\"" + map.get("Password") + "\"))";
                 MainService.db.setSql(s);
+                MainService.db.updateSql();
+                s = "SELECT Id FROM UserInfo WHERE Username = \"" + map.get("Username") + "\"";
+                MainService.db.setSql(s);
                 List l = MainService.db.quarySql();
                 if (l.get(0) instanceof Map) {
                     int Id = (int) ((Map) l.get(0)).get("Id");

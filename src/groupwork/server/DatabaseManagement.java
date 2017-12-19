@@ -114,7 +114,7 @@ public class DatabaseManagement {
         ResultSetMetaData rsMetaData = rs.getMetaData();
         while (rs.next()) {
             Map<String, String> result = new HashMap<String, String>();
-            for (int i = 0; i < rsMetaData.getColumnCount(); i++) {
+            for (int i = 1; i <= rsMetaData.getColumnCount(); i++) {
                 result.put(rsMetaData.getColumnName(i),rs.getString(i));
             }
             resultList.add(result);
@@ -130,10 +130,15 @@ public class DatabaseManagement {
             return -1;
         }
         connect();
-        int result = statement.executeUpdate(sql);
+        statement.executeUpdate(sql);
+        ResultSet result = statement.getGeneratedKeys();
+        int num = -1;
+        if (result.next()) {
+            num = result.getInt(1);
+        }
         close(statement);
         close(conn);
         sql = null;
-        return result;
+        return num;
     }
 }
