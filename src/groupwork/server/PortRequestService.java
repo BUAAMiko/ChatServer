@@ -12,10 +12,12 @@ public class PortRequestService extends Thread {
     public void run() {
         while(true) {
             try {
+                //初始化一个UDP接口并接收数据包
                 udp = new UDPSocketManagement(2333);
                 packet = udp.receivedDatagramPacket();
                 byte[] data = packet.getData();
                 String string = new String(data, 0,ByteProcessingFunction.byteArrayEffectiveLength(data));
+                //根据数据包中的字符串来确定新建什么类型的端口
                 if (string.equals("TCP_Port")) {
                     data = ByteProcessingFunction.intToBytes(MainService.createNewTCPSocketThread());
                     udp.sendDatagramPacket(data, 0, data.length, packet.getAddress());
@@ -26,6 +28,7 @@ public class PortRequestService extends Thread {
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             } finally {
+                //如果发生错误且udp端口新建成功则关闭udp端口
                 if (udp != null)
                     udp.closeDatagramSocket();
             }
