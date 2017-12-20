@@ -216,7 +216,7 @@ public class DatabaseManagement {
             return -1;
         }
         connect();
-        statement.executeUpdate(sql);
+        statement.executeUpdate(sql,Statement.RETURN_GENERATED_KEYS);
         //获取新增的数据行的Id
         ResultSet result = statement.getGeneratedKeys();
         int num = -1;

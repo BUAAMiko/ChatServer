@@ -125,7 +125,7 @@ public class TCPSocketManagement extends Thread {
         while (socket.isConnected()) {
             try {
                 byte[] data = receiveData();
-                data = TCPPacketAnalysis.pakcetAnalysis(data);
+                data = TCPPacketAnalysis.packetAnalysis(data);
                 sendData(data);
             } catch (IOException | SQLException | ClassNotFoundException e) {
                 e.printStackTrace();

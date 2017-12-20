@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class TCPPacketAnalysis {
 
-    static byte[] pakcetAnalysis(byte[] data) throws SQLException, IOException, ClassNotFoundException {
+    static byte[] packetAnalysis(byte[] data) throws SQLException, IOException, ClassNotFoundException {
         ObjectInputStream objIn = new ObjectInputStream(new ByteArrayInputStream(data));
         Map map = (Map) objIn.readObject();
         String s = (String) map.get("Type");
