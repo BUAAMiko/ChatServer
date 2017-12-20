@@ -18,7 +18,6 @@ public class UDPPacketAnalysis {
                 s = (String) map.get("SQL");
                 MainService.db.setSql(s);
                 List l = MainService.db.querySql();
-                MainService.log.println(new Date() + ":");
                 response = ByteProcessingFunction.objectToBytes(l);
             }
             break;
