@@ -25,16 +25,17 @@
   "Id"中保存用户的用户名(非昵称) (int/String)  
   "Password"中保存用户的密码 (String)  
   返回用户昵称或者字符串FALSE (String)  
-* "Ask_Message"  
-  "Id"中保存用户的用户名(非昵称) (int/String)  
-  返回一个内容为Map<String,String>的List,为查询结果 (List)
 * "Send_Message"  
   "From"中保存发送者的Id(非昵称) (int/String)  
   "To"中保存接收者的Id(非昵称) (int/String)  
   "Message"中保存信息的具体内容 (String)  
   返回一个正整数int值则成功 (int)
 ###### TCP连接
+TCP数据传输分两次传输第一次将目标数据的字节数写入(int转byte[])，第二次将目标数据写入，读取时第一次读取4字节转化为int，然后持续读取对应长度的数据读取结束后即可断开连接，客户端断开连接后，服务端也会相应地断开连接  
 所有的TCP连接的数据包中均为序列化的Map实例，返回为请求内容的序列化内容，其中请求数据包中"Type"指明请求的数据内容，具体每种所需的其余数据见下表  
+* "Ask_Message"  
+  "Id"中保存用户的用户名(非昵称) (int/String)  
+  返回一个内容为Map<String,String>的List,为查询结果 (List)
 * "Picture"  
   TODO
 * "File"  
