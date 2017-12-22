@@ -25,7 +25,7 @@ public class TCPPacketAnalysis {
         byte[] response = new byte[1];
         switch (s) {
             case "Ask_Message": {
-                s = "SELECT * FROM ChatMessage WHERE `From` = " + map.get("From");
+                s = "SELECT * FROM ChatMessage WHERE `To` = " + map.get("Id");
                 MainService.db.setSql(s);
                 List l = MainService.db.querySql();
                 response = ByteProcessingFunction.objectToBytes(l);
