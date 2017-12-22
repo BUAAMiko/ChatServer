@@ -59,10 +59,7 @@ public class TCPPacketAnalysis {
                 MainService.db.setSql(s);
                 MainService.db.updateSql();
                 //加工返回数据并返回
-                Map m = new HashMap();
-                m.put("PacketIdentify",m.get("PacketIdentify"));
-                m.put("Id",id);
-                response = Functions.objectToBytes(m);
+                response = ((String) map.get("PacketIdentify")).getBytes();
             }
             break;
             case "Ask_File":
