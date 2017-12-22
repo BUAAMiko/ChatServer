@@ -16,13 +16,13 @@ public class PortRequestService extends Thread {
                 udp = new UDPSocketManagement(2333);
                 packet = udp.receivedDatagramPacket();
                 byte[] data = packet.getData();
-                String string = new String(data, 0,ByteProcessingFunction.byteArrayEffectiveLength(data));
+                String string = new String(data, 0, Functions.byteArrayEffectiveLength(data));
                 //根据数据包中的字符串来确定新建什么类型的端口
                 if (string.equals("TCP_Port")) {
-                    data = ByteProcessingFunction.intToBytes(MainService.createNewTCPSocketThread());
+                    data = Functions.intToBytes(MainService.createNewTCPSocketThread());
                     udp.sendDatagramPacket(data, 0, data.length, packet.getAddress());
                 } else if (string.equals("UDP_Port")) {
-                    data = ByteProcessingFunction.intToBytes(MainService.createNewUDPSocketThread());
+                    data = Functions.intToBytes(MainService.createNewUDPSocketThread());
                     udp.sendDatagramPacket(data, 0, data.length, packet.getAddress());
                 }
             } catch (IOException | ClassNotFoundException e) {

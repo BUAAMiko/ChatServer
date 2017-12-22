@@ -77,7 +77,7 @@ public class TCPSocketManagement extends Thread {
         //读取一个4字节的int为传输内容的总长度
         byte[] data = new byte[4];
         in.read(data,0,4);
-        int length = ByteProcessingFunction.bytesToInt(data,0);
+        int length = Functions.bytesToInt(data,0);
         //重复从缓存中读取数据并保存到数组中
         data = new byte[length];
         int count = 0;
@@ -97,7 +97,7 @@ public class TCPSocketManagement extends Thread {
      */
     private void sendData(byte[] data) throws IOException {
         int length = data.length;
-        byte[] dataSize = ByteProcessingFunction.intToBytes(length);
+        byte[] dataSize = Functions.intToBytes(length);
         //传输目标数据的字节数
         out.write(dataSize);
         out.flush();

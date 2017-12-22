@@ -28,14 +28,14 @@ public class UDPPacketAnalysis {
                 s = (String) map.get("SQL");
                 MainService.db.setSql(s);
                 List l = MainService.db.querySql();
-                response = ByteProcessingFunction.objectToBytes(l);
+                response = Functions.objectToBytes(l);
             }
             break;
             case "Register": {
                 s = "INSERT INTO UserInfo(Username, Password) VALUES (\"" + map.get("Username") + "\",MD5(\"" + map.get("Password") + "\"))";
                 MainService.db.setSql(s);
                 int id = MainService.db.updateSql();
-                response = ByteProcessingFunction.intToBytes(id);
+                response = Functions.intToBytes(id);
             }
             break;
             case "Login": {

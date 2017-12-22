@@ -37,7 +37,14 @@ TCP数据传输分两次传输第一次将目标数据的字节数写入(int转b
 * "Ask_Message"  
   "Id"中保存用户的用户名(非昵称) (int/String)  
   返回一个内容为Map<String,String>的List,为查询结果 (List)
-* "Picture"  
-  TODO
-* "File"  
-  TODO
+* "Send_Picture"  
+  "From"中保存发送者的用户名(非昵称) (int/String)  
+  "To"中保存接受这的Id(非昵称) (int/String)  
+  "File"中保存File类型的实例 (File)  
+  "PacketIdentify"中保存任意字符串(可为空) (String)  
+  返回一个Map,"PacketIdentify"中字符串与原客户端相同,"Id"中保存该文件在服务器的Id用于以后请求数据 (Map)
+* "Send_File"  
+  除"Type"以外与Send_Picture相同
+* "Ask_File"或"Ask_Picture"  
+  "Id"中保存索取文件在服务器的Id号 (int/String)  
+  返回一个Map,"File"中保存File实例,"FileName"中保存文件名,"Type"中保存文件类型(由传输时的Type决定,如果上传时为Send_File则返回字符串File,Picture同理)

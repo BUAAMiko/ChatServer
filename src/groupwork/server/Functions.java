@@ -2,7 +2,7 @@ package groupwork.server;
 
 import java.io.*;
 
-public class ByteProcessingFunction {
+public class Functions {
 
     /**
      * 传入字节数组读取\0的位置并返回
@@ -79,5 +79,35 @@ public class ByteProcessingFunction {
         objIn.close();
         byteIn.close();
         return o;
+    }
+
+    /**
+     * 将File文件中的数据读出生成字节数组
+     *
+     * @param f 传入的File实例
+     * @return 返回的字节数组
+     * @throws IOException 转换的时候可能抛出异常
+     */
+    private static byte[] fileToBytes(File f) throws IOException {
+        FileInputStream in = new FileInputStream(f);
+        byte[] data = new byte[in.available()];
+        in.read(data);
+        in.close();
+        return data;
+    }
+
+    /**
+     * 将传入的文件保存到本地
+     *
+     * @param file 准备保存的File实例
+     * @param path 文件保存的本地地址
+     * @throws IOException 保存的时候可能抛出异常
+     */
+    static void saveFile(File file, String path) throws IOException {
+        File f = new File(path);
+        f.createNewFile();
+        RandomAccessFile out = new RandomAccessFile(f,"rw");
+        out.write(fileToBytes(file));
+        out.close();
     }
 }

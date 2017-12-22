@@ -40,6 +40,11 @@ public class MainService {
         }
         threadPool = Executors.newCachedThreadPool();
         threadPool.execute(new PortRequestService());
+        try {
+            Test.main(new String[1]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Scanner input = new Scanner(System.in);
         while (input.hasNext()) {
             String command = input.next();
