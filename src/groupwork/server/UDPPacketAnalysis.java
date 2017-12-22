@@ -3,6 +3,7 @@ package groupwork.server;
 import java.io.*;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class UDPPacketAnalysis {
                 s = "SELECT * FROM UserInfo WHERE Id = " + map.get("Id") + " AND Password = MD5(\"" + map.get("Password") +"\")";
                 MainService.db.setSql(s);
                 List l = MainService.db.querySql();
-                if (l.get(0) instanceof Map) {
+                if (l.size() != 0 && l.get(0) instanceof Map) {
                     String Username = (String) ((Map) l.get(0)).get("Username");
                     response = Username.getBytes();
                 } else {
@@ -40,12 +41,6 @@ public class UDPPacketAnalysis {
                 }
             }
             break;
-            case "Ask_Message": {
-                s = "SELECT * FROM ChatMessage WHERE `To` = " + map.get("Id");
-                MainService.db.setSql(s);
-                List l = MainService.db.querySql();
-                response = ByteProcessingFunction.objectToBytes(l);
-            }
             case "Send_Message": {
                 SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 s = "INSERT INTO ChatMessage (Date,`From`,`To`,MessageType,Message,SubMessage) VALUES (\""

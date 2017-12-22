@@ -1,6 +1,8 @@
 package groupwork.server;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ByteProcessingFunction {
 
@@ -38,7 +40,7 @@ public class ByteProcessingFunction {
      * @param offset 字节数组中整形的偏置
      * @return 返回对应的整形
      */
-    public static int bytesToInt(byte[] src, int offset) {
+    static int bytesToInt(byte[] src, int offset) {
         int value;
         value = (int) ((src[offset] & 0xFF)
                 | ((src[offset+1] & 0xFF)<<8)

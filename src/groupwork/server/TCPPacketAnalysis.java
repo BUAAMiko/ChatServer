@@ -16,6 +16,14 @@ public class TCPPacketAnalysis {
         String s = (String) map.get("Type");
         byte[] response = new byte[1];
         switch (s) {
+            case "Ask_Message": {
+                s = "SELECT * FROM ChatMessage WHERE `From` = " + map.get("From") + " AND `To` = " + map.get("To");
+                MainService.db.setSql(s);
+                List tmp = MainService.db.querySql();
+                List l = ByteProcessingFunction.topTenList(tmp);
+                response = ByteProcessingFunction.objectToBytes(l);
+            }
+            break;
             case "Send_Picture": {
                 SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 s = "INSERT INTO ChatMessage (Date,`From`,`To`,MessageType,SubMessage) VALUES (\""

@@ -14,8 +14,8 @@ public class TCPSocketManagement extends Thread {
     private String ip;
     private ServerSocket serverSocket;
     private Socket socket;
-    private DataOutputStream out;
-    private DataInputStream in;
+    private BufferedOutputStream out;
+    private BufferedInputStream in;
 
     /**
      * 无参数构造，分配一个空闲的端口
@@ -46,10 +46,10 @@ public class TCPSocketManagement extends Thread {
      * @throws IOException 监听时可能会丢出异常
      */
     private void listenPort() throws IOException {
-        MainService.log.println(new Date() + ":服务器正在监听 " + port + " 端口");
+        //MainService.log.println(new Date() + ":服务器正在监听 " + port + " 端口");
         socket = serverSocket.accept();
         ip = String.valueOf(socket.getInetAddress());
-        MainService.log.println(new Date() + ":收到来自" + ip + "的连接，现有连接数" + (++socketNum));
+        //MainService.log.println(new Date() + ":收到来自" + ip + "的连接，现有连接数" + (++socketNum));
     }
 
     /**
@@ -74,8 +74,18 @@ public class TCPSocketManagement extends Thread {
      * @throws IOException 读取的时候可能抛出异常
      */
     private byte[] receiveData() throws IOException {
-        byte[] data = new byte[in.available()];
-        in.read(data);
+        //读取一个4字节的int为传输内容的总长度
+        byte[] data = new byte[4];
+        in.read(data,0,4);
+        int length = ByteProcessingFunction.bytesToInt(data,0);
+        //重复从缓存中读取数据并保存到数组中
+        data = new byte[length];
+        int count = 0;
+        while (count < length) {
+            int tmp = in.available();
+            in.read(data,count,tmp);
+            count += tmp;
+        }
         return data;
     }
 
@@ -85,7 +95,14 @@ public class TCPSocketManagement extends Thread {
      * @throws IOException 写入的时候可能抛出异常
      */
     private void sendData(byte[] data) throws IOException {
+        int length = data.length;
+        byte[] dataSize = ByteProcessingFunction.intToBytes(length);
+        //传输目标数据的字节数
+        out.write(dataSize);
+        out.flush();
+        //传输目标数据
         out.write(data);
+        out.flush();
     }
 
     /**
@@ -107,8 +124,8 @@ public class TCPSocketManagement extends Thread {
         try {
             //监听端口并且在有连接访问目标端口时初始化输入输出流
             listenPort();
-            out = new DataOutputStream(socket.getOutputStream());
-            in = new DataInputStream(socket.getInputStream());
+            out = new BufferedOutputStream(socket.getOutputStream());
+            in = new BufferedInputStream(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
