@@ -4,8 +4,6 @@ import sun.security.provider.MD5;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 

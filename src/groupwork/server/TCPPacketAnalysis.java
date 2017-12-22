@@ -1,7 +1,6 @@
 package groupwork.server;
 
 import java.io.*;
-import java.net.Socket;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,6 +9,15 @@ import java.util.Map;
 
 public class TCPPacketAnalysis {
 
+    /**
+     * 将传入的数据进行解析并且返回相应的数据，在调用函数中进行发送，具体格式见Readme.md
+     *
+     * @param data 接收到的数据
+     * @return 准备返回的数据
+     * @throws SQLException SQL查询的时候可能抛出异常
+     * @throws IOException 实例转换字节数组的时候可能抛出异常
+     * @throws ClassNotFoundException jdbc驱动未能成功加载时可能抛出异常
+     */
     static byte[] packetAnalysis(byte[] data) throws SQLException, IOException, ClassNotFoundException {
         ObjectInputStream objIn = new ObjectInputStream(new ByteArrayInputStream(data));
         Map map = (Map) objIn.readObject();
@@ -17,7 +25,7 @@ public class TCPPacketAnalysis {
         byte[] response = new byte[1];
         switch (s) {
             case "Ask_Message": {
-                s = "SELECT * FROM ChatMessage WHERE `From` = " + map.get("From") + " AND `To` = " + map.get("To");
+                s = "SELECT * FROM ChatMessage WHERE `From` = " + map.get("From");
                 MainService.db.setSql(s);
                 List l = MainService.db.querySql();
                 response = ByteProcessingFunction.objectToBytes(l);
