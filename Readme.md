@@ -57,3 +57,8 @@ TCP数据传输分两次传输第一次将目标数据的字节数写入(int转b
 * "MessageType" 为信息的类型如"Text""Picture""File"
 * "Message" 为信息的内容如果是非"Text"则请无视
 * "SubMessage" 为文件的名称如果是"Text"则请无视
+###### 注意
+所有的返回值  
+String类型请使用new String(data)来获取  
+int类型请使用Functions文件中的bytesToInt函数  
+其余类型请使用Functions文件中的bytesToObject函数来获取
