@@ -19,8 +19,7 @@ public class TCPPacketAnalysis {
             case "Ask_Message": {
                 s = "SELECT * FROM ChatMessage WHERE `From` = " + map.get("From") + " AND `To` = " + map.get("To");
                 MainService.db.setSql(s);
-                List tmp = MainService.db.querySql();
-                List l = ByteProcessingFunction.topTenList(tmp);
+                List l = MainService.db.querySql();
                 response = ByteProcessingFunction.objectToBytes(l);
             }
             break;

@@ -91,6 +91,7 @@ public class TCPSocketManagement extends Thread {
 
     /**
      * 将发送的数据data作为参数传入然后发送数据
+     *
      * @param data 输出的数据
      * @throws IOException 写入的时候可能抛出异常
      */
