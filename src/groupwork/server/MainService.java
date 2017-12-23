@@ -35,16 +35,14 @@ public class MainService {
             db = new DatabaseManagement();
             File file = new File("./log.txt");
             log = new PrintStream(new FileOutputStream(file, true), true);
-        } catch (FileNotFoundException | ClassNotFoundException | SQLException e) {
+            file = new File("./File");
+            if (!file.exists() || !file.isDirectory())
+                file.mkdir();
+        } catch (ClassNotFoundException | SQLException | IOException e) {
             e.printStackTrace();
         }
         threadPool = Executors.newCachedThreadPool();
         threadPool.execute(new PortRequestService());
-        try {
-            Test.main(new String[1]);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         Scanner input = new Scanner(System.in);
         while (input.hasNext()) {
             String command = input.next();

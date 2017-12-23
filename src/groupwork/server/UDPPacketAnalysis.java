@@ -61,8 +61,16 @@ public class UDPPacketAnalysis {
                         + "NULL" + "\""
                         + ")";
                 MainService.db.setSql(s);
-                int i = MainService.db.updateSql();
+                MainService.db.updateSql();
                 response = ((String) map.get("PacketIdentify")).getBytes();
+            }
+            break;
+            case "UserInfo": {
+                s = "SELECT Username FROM UserInfo WHERE Id = " + map.get("Id");
+                MainService.db.setSql(s);
+                List l = MainService.db.querySql();
+                String name = (String) ((Map) l.get(0)).get("Username");
+                response = name.getBytes();
             }
         }
         return response;

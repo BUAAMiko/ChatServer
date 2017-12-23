@@ -31,6 +31,9 @@
   "Message"中保存信息的具体内容 (String)  
   "PacketIdentify"中保存任意字符串(可为空) (String)  
   返回数据包中"PacketIdentify"中的字符串 (String)
+* "UserInfo"
+  "Id"中保存需要查询昵称的用户的Id (int/String)
+  返回一个字符串为用户的昵称 (String)
 ###### TCP连接
 TCP数据传输分两次传输第一次将目标数据的字节数写入(int转byte[])，第二次将目标数据写入，读取时第一次读取4字节转化为int，然后持续读取对应长度的数据读取结束后即可断开连接，客户端断开连接后，服务端也会相应地断开连接  
   
