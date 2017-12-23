@@ -65,12 +65,33 @@ public class UDPPacketAnalysis {
                 response = ((String) map.get("PacketIdentify")).getBytes();
             }
             break;
-            case "UserInfo": {
+            case "User_Info": {
                 s = "SELECT Username FROM UserInfo WHERE Id = " + map.get("Id");
                 MainService.db.setSql(s);
                 List l = MainService.db.querySql();
                 String name = (String) ((Map) l.get(0)).get("Username");
                 response = name.getBytes();
+            }
+            break;
+            case "Change_Password": {
+                s = "SELECT * FROM UserInfo WHERE Id = " + map.get("Id") + " AND Password = MD5(\"" + map.get("Password") +"\")";
+                MainService.db.setSql(s);
+                List l = MainService.db.querySql();
+                if (l.size() != 0) {
+                    s = "UPDATE UserInfo SET Password = MD5(\"" + map.get("NewPassword") + "\") WHERE Id = " + map.get("Id");
+                    MainService.db.setSql(s);
+                    MainService.db.updateSql();
+                    response = "TRUE".getBytes();
+                } else {
+                    response = "FALSE".getBytes();
+                }
+            }
+            break;
+            case "Change_Username": {
+                s = "UPDATE UserInfo SET Username = \"" + map.get("NewUsername") + "\" WHERE Id = " + map.get("Id");
+                MainService.db.setSql(s);
+                MainService.db.updateSql();
+                response = "TRUE".getBytes();
             }
         }
         return response;

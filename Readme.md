@@ -31,7 +31,7 @@
   "Message"中保存信息的具体内容 (String)  
   "PacketIdentify"中保存任意字符串(可为空) (String)  
   返回数据包中"PacketIdentify"中的字符串 (String)
-* "UserInfo"
+* "User_Info"
   "Id"中保存需要查询昵称的用户的Id (int/String)
   返回一个字符串为用户的昵称 (String)
 ###### TCP连接
