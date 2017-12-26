@@ -141,9 +141,9 @@ public class DatabaseManagement {
     private void createUserInfoTable() throws SQLException {
         sql = "CREATE TABLE UserInfo" +
                 "(" +
-                "    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT," +
-                "    username TEXT NOT NULL," +
-                "    password TEXT NOT NULL" +
+                "    Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT," +
+                "    Username TEXT NOT NULL," +
+                "    Password TEXT NOT NULL" +
                 ");";
         updateSql();
     }
