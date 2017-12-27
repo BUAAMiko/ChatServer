@@ -26,6 +26,8 @@ public class TCPSocketManagement extends Thread {
         serverSocket = new ServerSocket(0);
         port = serverSocket.getLocalPort();
         MainService.setPort(port);
+        Thread.currentThread().setName("TCP" + port);
+        MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器新建线程");
     }
 
     /**
@@ -38,6 +40,8 @@ public class TCPSocketManagement extends Thread {
         serverSocket = new ServerSocket(port);
         this.port = serverSocket.getLocalPort();
         MainService.setPort(this.port);
+        Thread.currentThread().setName("" + port);
+        MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器新建线程");
     }
 
     /**
@@ -46,10 +50,10 @@ public class TCPSocketManagement extends Thread {
      * @throws IOException 监听时可能会丢出异常
      */
     private void listenPort() throws IOException {
-        //MainService.log.println(new Date() + ":服务器正在监听 " + port + " 端口");
+        MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器正在监听" + port + "端口");
         socket = serverSocket.accept();
         ip = String.valueOf(socket.getInetAddress());
-        //MainService.log.println(new Date() + ":收到来自" + ip + "的连接，现有连接数" + (++socketNum));
+        MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器收到来自" + ip + "的连接");
     }
 
     /**
@@ -86,6 +90,7 @@ public class TCPSocketManagement extends Thread {
             in.read(data,count,tmp);
             count += tmp;
         }
+        MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器收到" + length + "字节的数据");
         return data;
     }
 
@@ -104,6 +109,7 @@ public class TCPSocketManagement extends Thread {
         //传输目标数据
         out.write(data);
         out.flush();
+        MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器发送" + length + "字节的数据");
     }
 
     /**

@@ -34,7 +34,7 @@ public class MainService {
         try {
             db = new DatabaseManagement();
             File file = new File("./log.txt");
-            log = new PrintStream(new FileOutputStream(file, true), true);
+            log = new PrintStream(new FileOutputStream(file, true), true); //MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:");
             file = new File("./File");
             if (!file.exists() || !file.isDirectory())
                 file.mkdir();

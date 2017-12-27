@@ -24,6 +24,7 @@ public class UDPSocketManagement extends Thread{
         packet = new DatagramPacket(data,data.length);
         //将分配的端口返回到主类
         MainService.setPort(socket.getLocalPort());
+        Thread.currentThread().setName("" + socket.getLocalPort());
     }
 
     /**
@@ -39,6 +40,7 @@ public class UDPSocketManagement extends Thread{
         packet = new DatagramPacket(data,data.length);
         //将分配的端口返回到主类
         MainService.setPort(socket.getLocalPort());
+        Thread.currentThread().setName("" + socket.getLocalPort());
     }
 
     /**
