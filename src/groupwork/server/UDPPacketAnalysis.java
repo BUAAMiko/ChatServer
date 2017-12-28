@@ -22,6 +22,7 @@ public class UDPPacketAnalysis {
         ObjectInputStream objIn = new ObjectInputStream(new ByteArrayInputStream(data));
         Map map = (Map) objIn.readObject();
         String s = (String) map.get("Type");
+        MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:数据包类型为" + s + "，正在返回数据");
         byte[] response = new byte[1];
         switch (s) {
             case "SQL_Q": {

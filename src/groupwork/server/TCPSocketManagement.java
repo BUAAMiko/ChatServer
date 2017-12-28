@@ -118,7 +118,7 @@ public class TCPSocketManagement extends Thread {
      * @throws IOException 关闭时可能会丢出异常
      */
     private void closeConnect() throws IOException {
-        MainService.log.println(new Date() + ":服务器已检测到来自" + ip + "的连接已断开");
+        MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器断开连接");
         socket.shutdownInput();
         in.close();
         out.close();
@@ -146,11 +146,12 @@ public class TCPSocketManagement extends Thread {
         };
         timer.schedule(checkConnection,5000);
         //如果连接没有被关闭则读取socket连接传输过来的数据并交由TCPPacketAnalysis处理,并返回结果
-        while (socket.isConnected()) {
+        if (socket.isConnected()) {
             try {
                 byte[] data = receiveData();
                 data = TCPPacketAnalysis.packetAnalysis(data);
                 sendData(data);
+                closeConnect();
             } catch (IOException | SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

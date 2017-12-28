@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.sql.SQLException;
+import java.util.Date;
 
 public class UDPSocketManagement extends Thread{
 
@@ -25,6 +26,7 @@ public class UDPSocketManagement extends Thread{
         //将分配的端口返回到主类
         MainService.setPort(socket.getLocalPort());
         Thread.currentThread().setName("" + socket.getLocalPort());
+        MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器新建线程");
     }
 
     /**
@@ -41,6 +43,7 @@ public class UDPSocketManagement extends Thread{
         //将分配的端口返回到主类
         MainService.setPort(socket.getLocalPort());
         Thread.currentThread().setName("" + socket.getLocalPort());
+        MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器新建线程");
     }
 
     /**
@@ -56,6 +59,7 @@ public class UDPSocketManagement extends Thread{
         packet.setData(data,offset,length);
         packet.setAddress(address);
         socket.send(packet);
+        MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器向" + address.getHostAddress() + "发送" + length + "字节的数据");
     }
 
     /**
@@ -66,6 +70,7 @@ public class UDPSocketManagement extends Thread{
      */
     private void sendDatagramPacket(DatagramPacket packet) throws IOException {
         socket.send(packet);
+        MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器向" + packet.getAddress().getHostAddress() + "发送" + packet.getLength() + "字节的数据");
     }
 
     /**
@@ -77,6 +82,7 @@ public class UDPSocketManagement extends Thread{
     DatagramPacket receivedDatagramPacket() throws IOException {
         packet.setData(new byte[1024]);
         socket.receive(packet);
+        MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器接收" + packet.getLength() + "字节的数据");
         return packet;
     }
 
@@ -85,6 +91,7 @@ public class UDPSocketManagement extends Thread{
      */
     void closeDatagramSocket() {
         socket.close();
+        MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器断开连接");
     }
 
     @Override
@@ -95,6 +102,7 @@ public class UDPSocketManagement extends Thread{
             byte[] response = UDPPacketAnalysis.packetAnalysis(packet.getData());
             packet.setData(response);
             sendDatagramPacket(packet);
+            closeDatagramSocket();
         } catch (IOException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
