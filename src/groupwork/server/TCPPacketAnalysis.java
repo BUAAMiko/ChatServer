@@ -27,10 +27,17 @@ public class TCPPacketAnalysis {
         byte[] response = new byte[1];
         switch (s) {
             case "Ask_Message": {
+                //获取聊天记录
                 s = "SELECT * FROM ChatMessage WHERE `To` = " + map.get("Id");
                 MainService.db.setSql(s);
-                List l = MainService.db.querySql();
-                response = Functions.objectToBytes(l);
+                List message = MainService.db.querySql();
+                //获取好友
+                s = "SELECT DISTINCT `From` FROM ChatMessage WHERE `To` = " + map.get("Id");
+                List friend = MainService.db.querySql();
+                Map m = new HashMap();
+                m.put("Message",message);
+                m.put("Friends",friend);
+                response = Functions.objectToBytes(m);
             }
             break;
             case "Send_File":
