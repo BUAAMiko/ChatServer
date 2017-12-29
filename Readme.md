@@ -40,7 +40,7 @@ TCP数据传输分两次传输第一次将目标数据的字节数写入(int转b
 所有的TCP连接的数据包中均为序列化的Map实例，返回为请求内容的序列化内容，其中请求数据包中"Type"指明请求的数据内容，具体每种所需的其余数据见下表  
 * "Ask_Message"  
   "Id"中保存用户的用户名(非昵称) (int/String)  
-  返回一个内容为Map<String,String>的List,为查询结果 (List)
+  返回两个内容为Map<String,List>的List，保存在一个Map中"Message"对应聊天信息的List,"Friends"对应好友信息的List,为查询结果 (List)
 * "Send_Picture"  
   "From"中保存发送者的用户名(非昵称) (int/String)  
   "To"中保存接受这的Id(非昵称) (int/String)  

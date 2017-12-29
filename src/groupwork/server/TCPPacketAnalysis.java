@@ -3,10 +3,7 @@ package groupwork.server;
 import java.io.*;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TCPPacketAnalysis {
 
@@ -33,7 +30,18 @@ public class TCPPacketAnalysis {
                 List message = MainService.db.querySql();
                 //获取好友
                 s = "SELECT DISTINCT `From` FROM ChatMessage WHERE `To` = " + map.get("Id");
-                List friend = MainService.db.querySql();
+                List friendIdList = MainService.db.querySql();
+                List friend = new ArrayList();
+                for (int i = 0; i < friendIdList.size(); i++) {
+                    Map tmp = (Map) friendIdList.get(i);
+                    s = "SELECT Username FROM UserInfo WHERE Id = " + tmp.get("From");
+                    List result = MainService.db.querySql();
+                    if (!result.isEmpty()) {
+                        Map m = (Map) result.get(0);
+                        m.put("Id", tmp.get("From"));
+                        friend.add(m);
+                    }
+                }
                 Map m = new HashMap();
                 m.put("Message",message);
                 m.put("Friends",friend);
