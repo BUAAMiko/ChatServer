@@ -25,7 +25,7 @@ public class TCPPacketAnalysis {
         switch (s) {
             case "Ask_Message": {
                 //获取聊天记录
-                s = "SELECT * FROM ChatMessage WHERE `To` = " + map.get("Id");
+                s = "SELECT * FROM ChatMessage WHERE `To` = " + map.get("Id") + " OR `From` = " + map.get("Id");
                 MainService.db.setSql(s);
                 List message = MainService.db.querySql();
                 //获取好友
