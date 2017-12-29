@@ -144,7 +144,7 @@ public class TCPSocketManagement extends Thread {
                 checkConnection();
             }
         };
-        timer.schedule(checkConnection,5000);
+        timer.schedule(checkConnection,500,5000);
         //如果连接没有被关闭则读取socket连接传输过来的数据并交由TCPPacketAnalysis处理,并返回结果
         if (socket.isConnected()) {
             try {
