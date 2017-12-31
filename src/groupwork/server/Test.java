@@ -1,14 +1,15 @@
 package groupwork.server;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Test {
     public static void main(String[] args) throws IOException {
-        TCPSocketManagement tcp = new TCPSocketManagement(2333);
-        tcp.start();
+        UDPSocketManagement udp = new UDPSocketManagement();
+        udp.sendDatagramPacket("UDP_Port".getBytes(),0,"UDP_Port".getBytes().length, InetAddress.getByName("127.0.0.1"));
         File f = new File("/home/jj/log.txt");
         f.getName();
         Map m = new HashMap();

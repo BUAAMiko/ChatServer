@@ -136,15 +136,6 @@ public class TCPSocketManagement extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //定时检查客户端是否关闭了socket连接
-        Timer timer = new Timer();
-        TimerTask checkConnection = new TimerTask() {
-            @Override
-            public void run() {
-                checkConnection();
-            }
-        };
-        timer.schedule(checkConnection,500,5000);
         //如果连接没有被关闭则读取socket连接传输过来的数据并交由TCPPacketAnalysis处理,并返回结果
         if (socket.isConnected()) {
             try {

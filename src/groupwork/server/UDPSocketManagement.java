@@ -25,7 +25,7 @@ public class UDPSocketManagement extends Thread{
         packet = new DatagramPacket(data,data.length);
         //将分配的端口返回到主类
         MainService.setPort(socket.getLocalPort());
-        Thread.currentThread().setName("" + socket.getLocalPort());
+        Thread.currentThread().setName("UDP" + socket.getLocalPort());
         MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器新建线程");
     }
 
@@ -42,7 +42,7 @@ public class UDPSocketManagement extends Thread{
         packet = new DatagramPacket(data,data.length);
         //将分配的端口返回到主类
         MainService.setPort(socket.getLocalPort());
-        Thread.currentThread().setName("" + socket.getLocalPort());
+        Thread.currentThread().setName("UDP" + socket.getLocalPort());
         MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器新建线程");
     }
 
@@ -68,7 +68,7 @@ public class UDPSocketManagement extends Thread{
      * @param packet 所要传送的数据包
      * @throws IOException 可能在发送数据包的过程中抛出异常
      */
-    private void sendDatagramPacket(DatagramPacket packet) throws IOException {
+    void sendDatagramPacket(DatagramPacket packet) throws IOException {
         socket.send(packet);
         MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:服务器向" + packet.getAddress().getHostAddress() + "发送" + packet.getLength() + "字节的数据");
     }

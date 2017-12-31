@@ -30,11 +30,13 @@ public class TCPPacketAnalysis {
                 List message = MainService.db.querySql();
                 //获取好友
                 s = "SELECT DISTINCT `From` FROM ChatMessage WHERE `To` = " + map.get("Id");
+                MainService.db.setSql(s);
                 List friendIdList = MainService.db.querySql();
                 List friend = new ArrayList();
                 for (int i = 0; i < friendIdList.size(); i++) {
                     Map tmp = (Map) friendIdList.get(i);
                     s = "SELECT Username FROM UserInfo WHERE Id = " + tmp.get("From");
+                    MainService.db.setSql(s);
                     List result = MainService.db.querySql();
                     if (!result.isEmpty()) {
                         Map m = (Map) result.get(0);

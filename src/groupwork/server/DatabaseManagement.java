@@ -22,7 +22,7 @@ public class DatabaseManagement {
      * @throws SQLException 如果没有相应的数据库和表可能在新建时抛出异常
      */
     DatabaseManagement() throws ClassNotFoundException, SQLException {
-        url = "jdbc:mysql://139.199.119.183:3306/ChatSoftware?useSSL=true";
+        url = "jdbc:mysql://127.0.0.1:3306/ChatSoftware?useSSL=true";
         username = "jj";
         password = "15975302648";
         init();

@@ -16,13 +16,13 @@ public class MainService {
 
     static int createNewTCPSocketThread() throws IOException, ClassNotFoundException {
         Thread network = new TCPSocketManagement();
-        threadPool.execute(network);
+        network.start();
         return MainService.port;
     }
 
     static int createNewUDPSocketThread() throws SocketException {
         Thread network = new UDPSocketManagement();
-        threadPool.execute(network);
+        network.start();
         return MainService.port;
     }
 
@@ -41,8 +41,8 @@ public class MainService {
         } catch (ClassNotFoundException | SQLException | IOException e) {
             e.printStackTrace();
         }
-        threadPool = Executors.newCachedThreadPool();
-        threadPool.execute(new PortRequestService());
+        Thread portRequestService = new PortRequestService();
+        portRequestService.start();
         Scanner input = new Scanner(System.in);
         while (input.hasNext()) {
             String command = input.next();
