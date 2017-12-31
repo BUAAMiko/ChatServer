@@ -88,7 +88,7 @@ public class Functions {
      * @return 返回的字节数组
      * @throws IOException 转换的时候可能抛出异常
      */
-    private static byte[] fileToBytes(File f) throws IOException {
+    static byte[] fileToBytes(File f) throws IOException {
         FileInputStream in = new FileInputStream(f);
         byte[] data = new byte[in.available()];
         in.read(data);
@@ -103,11 +103,11 @@ public class Functions {
      * @param path 文件保存的本地地址
      * @throws IOException 保存的时候可能抛出异常
      */
-    static void saveFile(File file, String path) throws IOException {
+    static void saveFile(byte[] file, String path) throws IOException {
         File f = new File(path);
         f.createNewFile();
         RandomAccessFile out = new RandomAccessFile(f,"rw");
-        out.write(fileToBytes(file));
+        out.write(file);
         out.close();
     }
 }

@@ -24,75 +24,77 @@ public class UDPPacketAnalysis {
         String s = (String) map.get("Type");
         MainService.log.println(new Date() + "[" + Thread.currentThread().getName() + "]:数据包类型为" + s + "，正在返回数据");
         byte[] response = new byte[1];
-        switch (s) {
-            case "SQL_Q": {
-                s = (String) map.get("SQL");
-                MainService.db.setSql(s);
-                List l = MainService.db.querySql();
-                response = Functions.objectToBytes(l);
-            }
-            break;
-            case "Register": {
-                s = "INSERT INTO UserInfo(Username, Password) VALUES (\"" + map.get("Username") + "\",MD5(\"" + map.get("Password") + "\"))";
-                MainService.db.setSql(s);
-                int id = MainService.db.updateSql();
-                response = Functions.intToBytes(id);
-            }
-            break;
-            case "Login": {
-                s = "SELECT * FROM UserInfo WHERE Id = " + map.get("Id") + " AND Password = MD5(\"" + map.get("Password") +"\")";
-                MainService.db.setSql(s);
-                List l = MainService.db.querySql();
-                if (l.size() != 0 && l.get(0) instanceof Map) {
-                    String Username = (String) ((Map) l.get(0)).get("Username");
-                    response = Username.getBytes();
-                } else {
-                    response = "FALSE".getBytes();
+        synchronized (MainService.db) {
+            switch (s) {
+                case "SQL_Q": {
+                    s = (String) map.get("SQL");
+                    MainService.db.setSql(s);
+                    List l = MainService.db.querySql();
+                    response = Functions.objectToBytes(l);
                 }
-            }
-            break;
-            case "Send_Message": {
-                SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                s = "INSERT INTO ChatMessage (Date,`From`,`To`,MessageType,Message,SubMessage) VALUES (\""
-                        + date.format(new Date()) + "\",\""
-                        + map.get("From") + "\",\""
-                        + map.get("To") + "\",\""
-                        + "Text" + "\",\""
-                        + map.get("Message") + "\",\""
-                        + "NULL" + "\""
-                        + ")";
-                MainService.db.setSql(s);
-                MainService.db.updateSql();
-                response = ((String) map.get("PacketIdentify")).getBytes();
-            }
-            break;
-            case "User_Info": {
-                s = "SELECT Username FROM UserInfo WHERE Id = " + map.get("Id");
-                MainService.db.setSql(s);
-                List l = MainService.db.querySql();
-                String name = (String) ((Map) l.get(0)).get("Username");
-                response = name.getBytes();
-            }
-            break;
-            case "Change_Password": {
-                s = "SELECT * FROM UserInfo WHERE Id = " + map.get("Id") + " AND Password = MD5(\"" + map.get("Password") +"\")";
-                MainService.db.setSql(s);
-                List l = MainService.db.querySql();
-                if (l.size() != 0) {
-                    s = "UPDATE UserInfo SET Password = MD5(\"" + map.get("NewPassword") + "\") WHERE Id = " + map.get("Id");
+                break;
+                case "Register": {
+                    s = "INSERT INTO UserInfo(Username, Password) VALUES (\"" + map.get("Username") + "\",MD5(\"" + map.get("Password") + "\"))";
+                    MainService.db.setSql(s);
+                    int id = MainService.db.updateSql();
+                    response = Functions.intToBytes(id);
+                }
+                break;
+                case "Login": {
+                    s = "SELECT * FROM UserInfo WHERE Id = " + map.get("Id") + " AND Password = MD5(\"" + map.get("Password") +"\")";
+                    MainService.db.setSql(s);
+                    List l = MainService.db.querySql();
+                    if (l.size() != 0 && l.get(0) instanceof Map) {
+                        String Username = (String) ((Map) l.get(0)).get("Username");
+                        response = Username.getBytes();
+                    } else {
+                        response = "FALSE".getBytes();
+                    }
+                }
+                break;
+                case "Send_Message": {
+                    SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    s = "INSERT INTO ChatMessage (Date,`From`,`To`,MessageType,Message,SubMessage) VALUES (\""
+                            + date.format(new Date()) + "\",\""
+                            + map.get("From") + "\",\""
+                            + map.get("To") + "\",\""
+                            + "Text" + "\",\""
+                            + map.get("Message") + "\",\""
+                            + "NULL" + "\""
+                            + ")";
+                    MainService.db.setSql(s);
+                    MainService.db.updateSql();
+                    response = ((String) map.get("PacketIdentify")).getBytes();
+                }
+                break;
+                case "User_Info": {
+                    s = "SELECT Username FROM UserInfo WHERE Id = " + map.get("Id");
+                    MainService.db.setSql(s);
+                    List l = MainService.db.querySql();
+                    String name = (String) ((Map) l.get(0)).get("Username");
+                    response = name.getBytes();
+                }
+                break;
+                case "Change_Password": {
+                    s = "SELECT * FROM UserInfo WHERE Id = " + map.get("Id") + " AND Password = MD5(\"" + map.get("Password") +"\")";
+                    MainService.db.setSql(s);
+                    List l = MainService.db.querySql();
+                    if (l.size() != 0) {
+                        s = "UPDATE UserInfo SET Password = MD5(\"" + map.get("NewPassword") + "\") WHERE Id = " + map.get("Id");
+                        MainService.db.setSql(s);
+                        MainService.db.updateSql();
+                        response = "TRUE".getBytes();
+                    } else {
+                        response = "FALSE".getBytes();
+                    }
+                }
+                break;
+                case "Change_Username": {
+                    s = "UPDATE UserInfo SET Username = \"" + map.get("NewUsername") + "\" WHERE Id = " + map.get("Id");
                     MainService.db.setSql(s);
                     MainService.db.updateSql();
                     response = "TRUE".getBytes();
-                } else {
-                    response = "FALSE".getBytes();
                 }
-            }
-            break;
-            case "Change_Username": {
-                s = "UPDATE UserInfo SET Username = \"" + map.get("NewUsername") + "\" WHERE Id = " + map.get("Id");
-                MainService.db.setSql(s);
-                MainService.db.updateSql();
-                response = "TRUE".getBytes();
             }
         }
         return response;
