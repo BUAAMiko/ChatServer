@@ -71,8 +71,13 @@ public class UDPPacketAnalysis {
                     s = "SELECT Username FROM UserInfo WHERE Id = " + map.get("Id");
                     MainService.db.setSql(s);
                     List l = MainService.db.querySql();
-                    String name = (String) ((Map) l.get(0)).get("Username");
-                    response = name.getBytes();
+                    if (l.size() == 0) {
+                        String name = "";
+                        response = name.getBytes();
+                    } else {
+                        String name = (String) ((Map) l.get(0)).get("Username");
+                        response = name.getBytes();
+                    }
                 }
                 break;
                 case "Change_Password": {
